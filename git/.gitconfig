@@ -1,0 +1,12 @@
+[credential]
+	helper = store
+[user]
+	email = 74547535+Prashant-student@users.noreply.github.com
+	name = Prashant
+[cola]
+	spellcheck = false
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
