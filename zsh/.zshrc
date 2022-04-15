@@ -109,6 +109,7 @@ source $ZSH/oh-my-zsh.sh
 alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias vim='nvim'
+alias astudio="~/android-studio/bin/studio.sh"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -137,7 +138,61 @@ else
     fi
 fi
 unset __conda_setup
+fcd(){
+    cd "$(fdfind --type d | fzf)"
+}
+
+open(){
+    xdg-open "$(fdfind --type f | fzf)"
+}
+
+get(){
+    fdfind --type f | fzf | sed 's/^..//g'| tr -d '/n' | xclip -selection c
+}
+
+fvim(){
+    nvim "$(fdfind --type f | fzf)"
+}
+
+dvim(){
+    nvim "$(fdfind --type d | fzf)"
+}
+fcode(){
+    code "$(fdfind --type f | fzf)"
+}
+
+dcode(){
+    code "$(fdfind --type d | fzf)"
+}
+vimdot(){
+   nvim ~/.dotfiles
+}
+
+pcd(){
+    cd "/home/prashant/projects/$(ls ~/projects | fzf)"
+}
+
+prog(){
+    local name="/home/prashant/projects/$(ls ~/projects | fzf)"
+    cd $name
+    code $name
+    tmux
+}
+
+push(){
+    git add .
+    git commit -m "$1"
+    git push
+}
+watch()
+{
+    while inotifywait --exclude .swp -e modify -r .; do $@; done;
+}
 # <<< conda initialize <<<
+# /home/prashant/Downloads/commandlinetools-linux-8092744_latest/cmdline-tools/bin
+#export PATH="/home/prashant/clones/flutter/bin:$PATH"
+export PATH="/opt/android-sdk/cmdline-tools/custom/bin:$PATH"
+#export PATH="/home/prashant/Downloads/commandlinetools-linux-8092744_latest/cmdline-tools/bin:$PATH"
 
 #Hadoop Related Options
 export HADOOP_HOME=/home/prashant/hadoop

@@ -59,6 +59,9 @@ Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 " Go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" copilot
+Plug 'github/copilot.vim',
+Plug 'ur4ltz/surround.nvim',
 
 
 call plug#end()
