@@ -110,6 +110,7 @@ alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias vim='nvim'
 alias astudio="~/android-studio/bin/studio.sh"
+alias ls='exa'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -124,20 +125,6 @@ export NVM_DIR="$HOME/.nvm"
 path+=('/home/prashant/.local/bin')
 export PATH
 
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/prashant/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/prashant/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/prashant/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/prashant/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
 fcd(){
     cd "$(fdfind --type d | fzf)"
 }
@@ -165,7 +152,10 @@ dcode(){
     code "$(fdfind --type d | fzf)"
 }
 vimdot(){
-   nvim ~/.dotfiles
+   nvim ~/dotfiles
+}
+vimzsh(){
+   nvim ~/dotfiles/zsh/zshrc
 }
 
 pcd(){
@@ -179,6 +169,18 @@ prog(){
     tmux
 }
 
+comp(){
+    local name="/home/prashant/code/competitive/$(ls ~/code/competitive | fzf)"
+    cd $name
+    code $name
+    tmux
+}
+compyou(){
+    local name="/home/prashant/code/competitive/youtube/$(ls ~/code/competitive/youtube | fzf)"
+    cd $name
+    code $name
+    tmux
+}
 push(){
     git add .
     git commit -m "$1"
@@ -188,6 +190,20 @@ watch()
 {
     while inotifywait --exclude .swp -e modify -r .; do $@; done;
 }
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/prashant/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/prashant/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/prashant/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/prashant/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
 # <<< conda initialize <<<
 # /home/prashant/Downloads/commandlinetools-linux-8092744_latest/cmdline-tools/bin
 #export PATH="/home/prashant/clones/flutter/bin:$PATH"

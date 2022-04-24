@@ -20,7 +20,7 @@ require("awful.hotkeys_popup.keys")
 require("collision")()
 
 -- Load Debian menu entries
-local debian = require("debian.menu")
+--local debian = require("debian.menu")
 local has_fdo, freedesktop = pcall(require, "freedesktop")
 
 -- {{{ Error handling
@@ -107,7 +107,7 @@ else
     mymainmenu = awful.menu({
         items = {
                   menu_awesome,
-                  { "Debian", debian.menu.Debian_menu.Debian },
+                  --{ "Debian", debian.menu.Debian_menu.Debian },
                   menu_terminal,
                 }
     })
@@ -129,6 +129,9 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
 local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 local docker_widget = require("awesome-wm-widgets.docker-widget.docker")
+local logout_menu_widget = require("awesome-wm-widgets.logout-menu-widget.logout-menu")
+local spotify_widget = require("awesome-wm-widgets.spotify-widget.spotify")
+
 --local github_activity_widget = require("awesome-wm-widgets.github-activity-widget.github-activity-widget")
 mytextclock = wibox.widget.textclock()
 batterywidget = wibox.widget.textbox()    
@@ -200,13 +203,13 @@ screen.connect_signal("property::geometry", set_wallpaper)
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
-one="" 
-two=""
-three=""
-four=""
-five=""
-six=""
-seven=""
+one=" " 
+two=" "
+three=" "
+four=" "
+five=" "
+six=" "
+seven=" "
     -- Each screen has its own tag table.
     awful.tag({ one, two, three, four, five, six, seven}, s, awful.layout.layouts[1])
 
@@ -226,7 +229,7 @@ seven=""
         filter  = awful.widget.taglist.filter.all,
         style   = {
         shape = gears.shape.circle,
-        font = "DejaVu Sans 15"
+        font = "DejaVu Sans 13"
     },
     layout   = {
         spacing = 25,
@@ -255,8 +258,9 @@ seven=""
             --require("battery-widget") {},
             batteryarc_widget({
                 show_current_level = true,
-                arc_thickness = 2,
+                arc_thickness = 3,
             }),
+            spotify_widget(),
             cpu_widget({
             width = 70,
             step_width = 2,
@@ -279,6 +283,10 @@ seven=""
             --username = 'prashantm2001',
         --},
             mytextclock,
+            logout_menu_widget{
+                font = 'Play 14',
+                onlock = function() awful.spawn.with_shell('i3lock-fancy') end
+            }
             --batterywidget, 
             --s.mylayoutbox,
         },
@@ -402,6 +410,8 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "e", awesome.quit,
+              {description = "logout awesome", group = "awesome"}),
+    awful.key({ modkey, "Shift"   }, "c", function () awful.spawn.with_shell("shutdown now") end,
               {description = "quit awesome", group = "awesome"}),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
@@ -444,17 +454,17 @@ globalkeys = gears.table.join(
      --awful.key({ }, "XF86MonBrightnessUp", function () awful.util.spawn("xbacklight -inc 10") end,
      --         {description = "increase brightness", group = "brightness"}),
 
-    awful.key({ }, "XF86MonBrightnessUp", function () awful.util.spawn("light -A 2") end,
+    awful.key({ }, "XF86MonBrightnessUp", function () awful.util.spawn("light -A 4") end,
              {description = "increase brightness", group = "brightness"}),
 
-    awful.key({ }, "XF86MonBrightnessDown", function () awful.util.spawn("light -U 2") end,
+    awful.key({ }, "XF86MonBrightnessDown", function () awful.util.spawn("light -U 4") end,
               {description = "decrease brightness", group = "brightness"}),
 
     --volume
-    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -D pulse sset Master 2%+") end,
+    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer set Master 2%+") end,
               {description = "increase volume", group = "volume"}),
 
-    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -D pulse sset Master 2%-") end,
+    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer set Master 2%-") end,
                 {description = "decrease volume", group = "volume"}),
 
     awful.key({ }, "XF86AudioMute", function () awful.util.spawn("amixer -D pulse set Master 1+ toggle") end,
@@ -759,8 +769,8 @@ beautiful.useless_gap = 6
 awful.spawn.with_shell("xmodmap -e 'keycode 66 =Escape'")
 awful.spawn.with_shell("xmodmap -e 'keycode 9 = Caps_Lock'")
 awful.spawn.with_shell("xmodmap -e 'clear lock'")
-awful.util.spawn("compton")
-awful.util.spawn("brave-browser")
+awful.util.spawn("picom --experimental-backends -b")
+awful.util.spawn("brave")
 --awful.util.spawn("discord")
 --awful.util.spawn("spotify")
 awful.util.spawn("copyq")
