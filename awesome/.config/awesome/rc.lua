@@ -207,11 +207,13 @@ one=" "
 two=" "
 three=" "
 four=" "
+browse=" "
+extra=" " 
 five=" "
 six=" "
 seven=" "
     -- Each screen has its own tag table.
-    awful.tag({ one, two, three, four, five, six, seven}, s, awful.layout.layouts[1])
+    awful.tag({ one, two, three,  four, browse, extra, five, six, seven}, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -405,6 +407,8 @@ globalkeys = gears.table.join(
         {description = "go back", group = "client"}),
 
     -- Standard program
+    awful.key({ "Mod1",           }, "Return", function () awful.spawn.with_shell("alacritty") end,
+              {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey,           }, "Return", function () awful.spawn.with_shell("alacritty") end,
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
@@ -504,6 +508,11 @@ clientkeys = gears.table.join(
               {description = "move to screen", group = "client"}),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
               {description = "toggle keep on top", group = "client"}),
+
+        -- Take Screenshots
+    awful.key({ modkey, "Shift"          }, "Print",      function () awful.spawn.with_shell("scrot --silent --select --line mode=edge'/tmp/%F_%T_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f'")             end,
+              {description = "ScreenShot", group = "Print"}),
+
     awful.key({ modkey,           }, "n",
         function (c)
             -- The client currently has the input focus, so it cannot be

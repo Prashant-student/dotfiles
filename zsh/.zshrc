@@ -110,11 +110,12 @@ alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias vim='nvim'
 alias astudio="~/android-studio/bin/studio.sh"
-alias ls='exa'
+alias ls='exa -la'
+alias cat='bat'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export FZF_DEFAULT_COMMAND='fdfind --type f'
+export FZF_DEFAULT_COMMAND='fd --type f'
 export FZF_DEFAULT_OPTS="--layout=reverse --inline-info --height=80%"
 
 export NVM_DIR="$HOME/.nvm"
@@ -125,31 +126,32 @@ export NVM_DIR="$HOME/.nvm"
 path+=('/home/prashant/.local/bin')
 export PATH
 
+#functions
 fcd(){
-    cd "$(fdfind --type d | fzf)"
+    cd "$(fd --type d | fzf)"
 }
 
 open(){
-    xdg-open "$(fdfind --type f | fzf)"
+    xdg-open "$(fd --type f | fzf)"
 }
 
 get(){
-    fdfind --type f | fzf | sed 's/^..//g'| tr -d '/n' | xclip -selection c
+    fd --type f | fzf | sed 's/^..//g'| tr -d '/n' | xclip -selection c
 }
 
 fvim(){
-    nvim "$(fdfind --type f | fzf)"
+    nvim "$(fd --type f | fzf)"
 }
 
 dvim(){
-    nvim "$(fdfind --type d | fzf)"
+    nvim "$(fd --type d | fzf)"
 }
 fcode(){
-    code "$(fdfind --type f | fzf)"
+    code "$(fd --type f | fzf)"
 }
 
 dcode(){
-    code "$(fdfind --type d | fzf)"
+    code "$(fd --type d | fzf)"
 }
 vimdot(){
    nvim ~/dotfiles
@@ -163,22 +165,24 @@ pcd(){
 }
 
 prog(){
-    local name="/home/prashant/projects/$(ls ~/projects | fzf)"
-    cd $name
+    cd "/home/prashant/projects/"
+    local name="$(fd -d 2 -t d | cut -c 3- | fzf)"
     code $name
+    cd $name
     tmux
 }
 
 comp(){
-    local name="/home/prashant/code/competitive/$(ls ~/code/competitive | fzf)"
-    cd $name
+    cd "/home/prashant/code/competitive/"
+    local name="$(fd -d 2 -t d | cut -c 3- | fzf)"
     code $name
+    cd $name
     tmux
 }
 compyou(){
     local name="/home/prashant/code/competitive/youtube/$(ls ~/code/competitive/youtube | fzf)"
-    cd $name
     code $name
+    cd $name
     tmux
 }
 push(){
@@ -230,3 +234,17 @@ export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
 
 export GOBIN=/home/prashant/go/gobin
 
+
+# pnpm
+export PNPM_HOME="/home/prashant/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+path=('/home/prashant/.julia/juliaup/bin' $path)
+export PATH
+
+# <<< juliaup initialize <<<

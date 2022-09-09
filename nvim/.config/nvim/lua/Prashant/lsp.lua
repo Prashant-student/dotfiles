@@ -47,16 +47,75 @@ capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 
 -- Use a loop t conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
+local opts = {
+  -- rust-tools options
+  tools = {
+    autoSetHints = true,
+    hover_with_actions = true,
+    inlay_hints = {
+      show_parameter_hints = true,
+      parameter_hints_prefix = "",
+      other_hints_prefix = "",
+      },
+    },
 
-    nvim_lsp['gopls'].setup {
-        capabilities = capabilities,
-        on_attach = on_attach,
-        flags = {
-            debounce_text_changes = 150,
+  -- all the opts to send to nvim-lspconfig
+  -- these override the defaults set by rust-tools.nvim
+  -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
+  -- https://rust-analyzer.github.io/manual.html#features
+  server = {
+    settings = {
+      ["rust-analyzer"] = {
+        assist = {
+          importEnforceGranularity = true,
+          importPrefix = "crate"
+          },
+        cargo = {
+          allFeatures = true
+          },
+        checkOnSave = {
+          -- default: `cargo check`
+          command = "clippy"
+          },
         },
-        command= "gopls",
-        rootPatterns= {"go.work", "go.mod", ".vim/", ".git/", ".hg/"},
-        filetypes = {"go"},
+        inlayHints = {
+          lifetimeElisionHints = {
+            enable = true,
+            useParameterNames = true
+          },
+        },
+      }
+    },
+}
+require('rust-tools').setup(opts)
+
+    -- nvim_lsp['gopls'].setup {
+    --     capabilities = capabilities,
+    --     on_attach = on_attach,
+    --     flags = {
+    --         debounce_text_changes = 150,
+    --     },
+    --     command= "gopls",
+    --     rootPatterns= {"go.work", "go.mod", ".vim/", ".git/", ".hg/"},
+    --     filetypes = {"go"},
+    -- }
+    nvim_lsp['gopls'].setup{
+      cmd = {'gopls'},
+      settings = {
+        gopls = {
+          analyses = {
+            nilness = true,
+            unusedparams = true,
+            unusedwrite = true,
+            useany = true,
+          },
+          experimentalPostfixCompletions = true,
+          gofumpt = true,
+          staticcheck = true,
+          usePlaceholders = true,
+        },
+      },
+      on_attach = on_attach,
     }
 
     nvim_lsp['tsserver'].setup {

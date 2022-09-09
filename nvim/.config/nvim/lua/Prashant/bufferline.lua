@@ -19,18 +19,18 @@ require('bufferline').setup {
     },
     highlights = {
         fill = {
-            guifg = {
+            fg = {
                 attribute = 'fg',
                 highlight = 'NvimTreeNormal'
             },
-            guibg = {
+            bg = {
                 attribute = 'bg',
                 highlight = 'NvimTreeNormal'
             }
         },
         -- style of unselected buffers
         background = {
-            guibg = {
+            bg = {
                 attribute = 'bg',
                 highlight = 'NvimTreeNormal'
             }
@@ -38,14 +38,10 @@ require('bufferline').setup {
         -- selected buffer, but not focused. Ex: nvim-tree has focus
         -- a little wonky when two+ buffers are selected (splits)
         buffer_visible = {
-            guibg = {
+            bg = {
                 attribute = 'bg',
                 highlight = 'BufferLineBufferSelected'
             }
-        },
-        -- remove text styles from selected buffer
-        buffer_selected = {
-            gui = "none"
         },
     }
 }

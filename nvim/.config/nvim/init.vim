@@ -22,7 +22,6 @@ set nowrap
 set splitbelow
 set splitright
 set hidden
-set scrolloff=8
 set noshowmode
 set updatetime=250 
 set encoding=UTF-8
@@ -54,8 +53,9 @@ Plug 'tpope/vim-fugitive'
 Plug 'lewis6991/gitsigns.nvim'
 " Telescope
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-telescope/telescope-file-browser.nvim'
 " Go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -63,6 +63,22 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'github/copilot.vim',
 Plug 'ur4ltz/surround.nvim',
 
+Plug 'ygm2/rooter.nvim',
+" random
+Plug 'folke/trouble.nvim'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
+Plug 'j-hui/fidget.nvim'
+Plug 'kosayoda/nvim-lightbulb'
+Plug 'm-demare/hlargs.nvim'
+Plug 'simrat39/rust-tools.nvim'
+Plug 'weilbith/nvim-code-action-menu'
+Plug 'williamboman/nvim-lsp-installer'
+Plug 'hrsh7th/cmp-cmdline' 
 
 call plug#end()
 lua require('Prashant')
@@ -112,6 +128,8 @@ set shortmess+=c
 " always show signcolumns
 set signcolumn=yes
 
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<C-y>"
+
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
@@ -144,6 +162,8 @@ nnoremap <silent> U :call <SID>show_documentation()<CR>
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
 
+"nmap <silent>,y <>"+y
+
 " Remap for format selected region
 vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
@@ -165,4 +185,10 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 " disable vim-go :GoDef short cut (gd)
 " this is handled by LanguageClient [LC]
+
+" Using Lua functions
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+
 let g:go_def_mapping_enabled = 0
